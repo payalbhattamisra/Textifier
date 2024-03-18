@@ -129,6 +129,38 @@ export default function TextForm(props) {
       console.error('Error creating image:', error);
     }
   };
+  const textToEmoji = () => {
+     const emojiMapping = {
+      'happy': '😊',
+      'sad': '😢',
+      'angry': '😠',
+      'love': '❤️',
+      'smile':'😁',
+      'swag':'😎',
+      'attitude':'😏',
+      'hot':'🥵',
+      'slang':'🤬',
+      'cry':'😭',
+      'sleep':'😴',
+      'celebration':'🥳',
+      'speachless':'😐',
+      'think':'🤔',
+      'search':'🧐',
+      'omg':'😮',
+      'hug':'🤗',
+      'shock':'😱',
+      'funny':'😂',
+      'innocent':'😇',
+      'yummy':'😋',
+    };
+
+    let newText = text.toLowerCase();
+    Object.keys(emojiMapping).forEach(word => {
+      const regex = new RegExp('\\b' + word + '\\b', 'g');
+      newText = newText.replace(regex, emojiMapping[word]);
+    });
+    setText(newText);
+  };
 
   const buttonStyle = {
     backgroundColor: '#1a75ff',
@@ -142,7 +174,7 @@ export default function TextForm(props) {
 
   return (
     <>
-      <div className='body'>
+      <div className='body' style={{paddingLeft:"10px"}}>
         <h1>{props.heading}</h1>
         <div className="mb-3">
         <textarea
@@ -202,7 +234,7 @@ export default function TextForm(props) {
         </button>
       </div>
 
-      <div className="container">
+      <div className="container" style={{paddingLeft:'20px'}}>
         <h1>Your Text Summary</h1>
         <p style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
           {text.split('').length} words and {text.length} characters
@@ -211,7 +243,7 @@ export default function TextForm(props) {
           {0.008 * text.split('').length} Minutes to Read content
         </h3>
       </div>
-      <div className='last'>
+      <div className='last' style={{paddingLeft:"20px", lineHeight:'40px'}}>
         <h1>
           Text Image <br />
           <small style={{ color: props.mode === 'dark' ? 'white' : 'black', fontSize: '20px', fontWeight: 'lighter' }}>
@@ -434,13 +466,18 @@ export default function TextForm(props) {
                 <input name="font-size" type="number"  value={lineHeight}
                 className="form-control" 
           min="1.4"
-          max="25.0"
+          max="55.0"
           onChange={handleLineHeightChange}  />
                 <select name="font-align">
                     <option selected value="em">em</option>
                     <option value="px">px</option>
                 </select>
             </div>
+       
+      <div className="emoji">
+        <h1>Text to Emoji Converter</h1>
+        <button style={buttonStyle} onClick={textToEmoji}>Convert to Emoji</button>
+      </div>
       </div>
     </>
   );
